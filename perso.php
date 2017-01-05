@@ -7,6 +7,7 @@
           private $_exp;
           private $_deg;
           private $_force;
+          private $_esquiv;
 
 
           // // un constructeur permet d'initialiser les attribue de l'objet dès sa création.
@@ -18,10 +19,10 @@
           //     $this->_exp = 5; // initialisation de l'experiance
           // }
 
-          // mutateur qui modifie l'attribue $_force
+          // mutateur qui modifie l'attribue ($_force)
           public function setForce($force)
           {
-              if (!is_int($force)) // verifir que ce n'est pas un nombre entier;
+              if (!is_int($force)) // verifie que ce n'est pas un nombre entier;
               {
                 trigger_error('la force doit être un nombre entier !', E_USER_WARNING);
                 return;
@@ -43,7 +44,6 @@
                 trigger_error(' le niveau de degat du joueur doit etre un nombre entier !', E_USER_WARNING);
                 return;
               }
-
                 $this->_deg = $deg;
           }
 
@@ -67,21 +67,34 @@
           public function setExp()
           {
              $this->_exp = $this->_exp + 5;
+             return $this->_exp;
           }
 
-          // niveau de pv du perso
-          public function pointVie()
-          {
-            $this->_pv = 200;
-          }
-
+          // faire en sorte que quand lesquive et false alors les degat influ sur les pv de l'adversaire
           // action de frappe
           public function frap($persoAFrapper)
           {
             $persoAFrapper->_deg += $this->_force;
+            return $this->_deg;
           }
 
-          // renvoie le contenu de l'attribut $_deg.
+          // propriete de l'esquive
+          public function esquiv()
+          {
+            $nm = $this->_esquiv = rand(0, 100);
+
+              if ( $nm > 50 ) {
+                echo " esquive l'attaque ";
+
+              }
+              else {
+                echo " prend des dégats ";
+                // echo (Perso pv()) == $pv-$deg;
+              }
+           }
+
+
+          // Methode degats() elle renvoie le contenu de l'attribut $_deg.
           public function degats()
           {
             return $this->_deg;
@@ -93,36 +106,46 @@
             return $this->_force;
           }
 
-          //  renvoie le contenu de l'attribut $_experience.
-          public function experience()
-          {
-            return $this->_exp;
-          }
 
           // pareil pour les pv
           public function pv()
           {
             return $this->_pv;
           }
+
+
+              // -------- fonction pour la page test-jeux (bouton)------ //
+          public function pvMario()
+           {
+             echo 'ok' ,$Mario->pv(), 'ok';
+           }
+
         }
         $Mario = new Perso;  // premier personnage crée
         $Luigi = new Perso;  // deuxieme
 
-        // proprieté perso
+        // creation proprieté perso
         $Mario->setForce(25);
         $Mario->setPv(100);
-        $Mario->setExp(5);
+        $Mario->setExp();
 
         $Luigi->setForce(17);
         $Luigi->setPv(100);
-        $Luigi->setExp(5);
-
-        // action perso
-        $Mario->frap($Luigi);
-        $Mario->setExp();
-
-        $Luigi->frap($Mario);
         $Luigi->setExp();
 
-        echo 'mario a ' , $Mario->force(), ' de force, contrairement a luigi qui a ' ,$Luigi->force(), ' de force. <br />';
+        // champ d'action
+        echo 'mario a ' , $Mario->force(), ' de force, contrairement à luigi qui a ' ,$Luigi->force(), ' de force. <br />';
+        echo 'mario attaque luigi, ' ,$Mario->frap($Luigi), "<br />";
+        echo 'luigi lance esquive ! ' ,$Luigi->esquiv(), '<br />';
+        echo 'luigi à mal, il prend ' ,$Luigi->degats(),' de degats. <br />';
+        echo 'luigi à ' ,$Luigi->pv(), ' points de vie.<br />';
+        echo 'mario lance esquive ! mario ',$Mario->esquiv(), '<br />';
+        echo 'luigi fait ' ,$Luigi->degats()," de degats.<br />";
+        echo "luigi a ",$Luigi->setExp()," point d'exp <br />";
+        echo "luigi a ",$Luigi->setExp()," point d'exp <br />";
+
+
+
+
+
       ?>
